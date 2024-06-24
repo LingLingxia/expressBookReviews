@@ -38,7 +38,7 @@ regd_users.post("/login", (req,res) => {
     req.session.Authentication ={
         accessToken
     }
-    return res.status(200).send("login success");
+    return res.status(200).send("login successful");
   }else{
     return res.status(208).send("Invalid login");
   }
@@ -48,25 +48,26 @@ regd_users.post("/login", (req,res) => {
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
   const isbn = req.params.isbn;
-  const username = req.query.username;
+  console.log(req.user);
+  const username = req.user.data;
   const review = req.query.review;
   if(books[isbn]){
     books[isbn].reviews[username] = review;
-    return res.status(200).send("review add success");
+    return res.status(200).send("review added successfully");
   }else{
-    return res.status(404).send("can not found book with given isbn" );
+    return res.status(404).send("can not find book with given isbn" );
   }
  
 });
 
 regd_users.delete("/auth/review/:isbn",(req,res)=>{
-   const user = req.session.user.data.username;
+   const user = req.user.data;
    const isbn = req.params.isbn;
    if(books[isbn]){
     delete books[isbn].reviews[user];
-    return res.status(200).send("delete success");
+    return res.status(200).send("delete successful");
   }else{
-    return res.status(404).send("can not found book with given isbn" );
+    return res.status(404).send("can not find book with given isbn" );
   }
 
 })
